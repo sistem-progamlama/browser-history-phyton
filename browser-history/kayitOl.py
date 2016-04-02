@@ -172,6 +172,7 @@ class Ui_MainWindow(QtGui.QWidget):
 		self.horizontalLayout_6.addWidget(self.btn_kayitTamam)
 		self.lbl_kayitSifreHata = QtGui.QLabel(self.centralwidget)
 		self.lbl_kayitSifreHata.setGeometry(QtCore.QRect(360, 320, 201, 21))
+		self.lbl_kayitSifreHata.setVisible(False)
 		font = QtGui.QFont()
 		font.setFamily(_fromUtf8("Verdana"))
 		font.setPointSize(10)
@@ -186,14 +187,14 @@ class Ui_MainWindow(QtGui.QWidget):
 		self.label_6 = QtGui.QLabel(self.centralwidget)
 		self.label_6.setGeometry(QtCore.QRect(70, 20, 81, 101))
 		self.label_6.setText(_fromUtf8(""))
-		self.label_6.setPixmap(QtGui.QPixmap(_fromUtf8("uye-ol kopya.png")))
+		self.label_6.setPixmap(QtGui.QPixmap(_fromUtf8("uye-ol.png")))
 		self.label_6.setObjectName(_fromUtf8("label_6"))
 		#        self.setCentralWidget(self.centralwidget)
 		self.menubar = QtGui.QMenuBar(self)
 		self.menubar.setGeometry(QtCore.QRect(0, 0, 550, 21))
 		self.menubar.setObjectName(_fromUtf8("menubar"))
 		#        self.setMenuBar(self.menubar)
-		QtCore.QObject.connect(self.btn_kayitTamam, QtCore.SIGNAL(_fromUtf8("clicked()")), self.closeEvent)
+		QtCore.QObject.connect(self.btn_kayitTamam, QtCore.SIGNAL(_fromUtf8("clicked()")), self.closeEven)
 		self.dialogTextBrowser = MyDialog()
 		self.retranslateUi(self)
 		QtCore.QMetaObject.connectSlotsByName(self)
@@ -211,13 +212,12 @@ class Ui_MainWindow(QtGui.QWidget):
 		                                           "<html><head/><body><p><span style=\" color:#ff0000;\">Şifreleriniz uyuşmamaktadır!</span></p></body></html>",
 		                                           None))
 
-	def closeEvent(self):
+	def closeEven(self):
 		adi = self.txt_kayitAdi.text()
 		email = self.txt_kayitEmail.text()
 		sifre = self.txt_kayitSifre.text()
 		sifreTekrar = self.txt_kayitSifreTekrar.text()
-		u = User(adi, sifre, email)
-		print(sifreTekrar, sifre)
+		u = User(adi, sifre, email,"")
 		if sifreTekrar == sifre:
 			try:
 				Mysql.üyeOl(u)

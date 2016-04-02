@@ -4,13 +4,10 @@ class User:
     sifre=''
     mail=''
     uid=''
-    def __init__(self):
-        print("User")
-    def __init__(self,ad,sif):
-        self.adi=ad
-        self.sifre=sif
-    def __init__(self,ad,sif,email):
+
+    def __init__(self,ad,sif,email,id):
         self.adi=ad
         self.sifre=sif
         self.mail=email
+        self.uid=id
 

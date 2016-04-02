@@ -3,8 +3,8 @@ import datetime
 import mysql.connector
 from User import User as de
 def getir(User):
-	cnx = mysql.connector.connect(user='baydar1', password='celacelal94',
-		host='185.86.12.173',
+	cnx = mysql.connector.connect(user='root', password='',
+		host='localhost',
 		database='history')
 	cursor = cnx.cursor()
 	query = 'SELECT `id`, `adi`, `sifre`, `email` FROM `User` WHERE `adi`=\'%s\' and  `sifre`=\'%s\'' % (User.adi,User.sifre)
@@ -17,11 +17,11 @@ def getir(User):
 		de.uid=id
 		print(u.adi+" girildi")
 		return True
-	cnx.close
 	return False
+
 def üyeOl(User):
-	cnx = mysql.connector.connect(user='baydar1', password='celacelal94',
-                              host='185.86.12.173',
+	cnx = mysql.connector.connect(user='root', password='',
+                              host='localhost',
                               database='history')
 
 	cursor = cnx.cursor()
@@ -30,8 +30,8 @@ def üyeOl(User):
 	cnx.commit()
 
 def placesIdGetir(place):
-	cnx = mysql.connector.connect(user='baydar1', password='celacelal94',
-                              host='185.86.12.173',
+	cnx = mysql.connector.connect(user='root', password='',
+                              host='localhost',
                               database='history')
 	cursor = cnx.cursor()
 	query = 'SELECT id from places where url=\"%s\"' % (place)
@@ -43,8 +43,8 @@ def placesIdGetir(place):
 	cnx.close
 	return False
 def placesEkle(place):
-	cnx = mysql.connector.connect(user='baydar1', password='celacelal94',
-                              host='185.86.12.173',
+	cnx = mysql.connector.connect(user='root', password='',
+                              host='localhost',
                               database='history')
 	cursor = cnx.cursor()
 	query = 'INSERT INTO `places`( `url`) VALUES (\"%s\")' % (place)
@@ -55,8 +55,8 @@ def kayıtEkle(kayıt,browser_id,tarih):
 	if(placesIdGetir(kayıt)==False):
 		placesEkle(kayıt)
 	id=placesIdGetir(kayıt)
-	cnx = mysql.connector.connect(user='baydar1', password='celacelal94',
-                              host='185.86.12.173',
+	cnx = mysql.connector.connect(user='root', password='',
+                              host='localhost',
                               database='history')
 	cursor = cnx.cursor()
 	query = 'INSERT INTO `history`( `user`, `url`, `b_id`, `tarih`) ' \
@@ -67,12 +67,12 @@ def kayıtEkle(kayıt,browser_id,tarih):
 	cnx.commit()
 
 def gecmisGetir():
-	cnx = mysql.connector.connect(user='baydar1', password='celacelal94',
-                              host='185.86.12.173',
+	cnx = mysql.connector.connect(user='root', password='',
+                              host='localhost',
                               database='history')
 	cursor = cnx.cursor()
 	query = 'SELECT p.url,h.tarih,b_adi FROM places p INNER JOIN history h on p.id=h.url ' \
-	        'inner join browser b on b.b_id=h.b_id WHERE user=\'%s\'' % (de.uid)
+	        'inner join browser b on b.b_id=h.b_id WHERE user=\'%s\' ORDER BY h.tarih DESC ' % (de.uid)
 	cursor.execute(query)
 	liste = []
 	liste.clear()
@@ -92,7 +92,19 @@ def milltoDate(i,tarayıcı):
 	target_date_time_ms = int(i/bölüm)*1000
 	print(target_date_time_ms)
 
-	delta = datetime.timedelta( 0, 3, 0, target_date_time_ms )
+	delta = datetime.timedelta( 0, 0, 0, target_date_time_ms )
 	target_date = base_datetime + delta
-	print(target_date)
+	yıl=datetime.date(target_date.year,target_date.month,target_date.day)
+	saat=datetime.time(target_date.hour,target_date.minute,target_date.second)
+	print(saat)
+	print(yıl)
 	return target_date
+def historySil(url,zaman):
+	cnx = mysql.connector.connect(user='root', password='',
+                              host='localhost',
+                              database='history')
+	cursor = cnx.cursor()
+	query = 'delete from history where url=%s and tarih =\"%s\" LIMIT 1'%(placesIdGetir(url),zaman)
+	print(query)
+	cursor.execute(query)
+	cnx.commit()

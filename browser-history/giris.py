@@ -38,7 +38,7 @@ class Ui_Dialog(QtGui. QMainWindow):
         parent.resize(320, 240)
         self.setMinimumSize(QtCore.QSize(550, 500))
         self.setMaximumSize(QtCore.QSize(550, 500))
-        self.pushButton = QtGui.QPushButton(MainWindow)
+        self.pushButton = QtGui.QPushButton(self)
         self.pushButton.setGeometry(QtCore.QRect(160, 100, 98, 27))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.lineEdit = QtGui.QLineEdit(MainWindow)
@@ -58,8 +58,11 @@ class Ui_Dialog(QtGui. QMainWindow):
         self.pushButton_2 = QtGui.QPushButton(MainWindow)
         self.pushButton_2.setGeometry(QtCore.QRect(50, 100, 98, 27))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.retranslateUi(MainWindow)
 
+        self.checkBox = QtGui.QCheckBox(MainWindow)
+        self.checkBox.setGeometry(QtCore.QRect(80, 130, 141, 22))
+        self.checkBox.setObjectName(_fromUtf8("checkBox"))
+        self.retranslateUi(MainWindow)
         QtCore.QObject.connect(self.pushButton, QtCore.SIGNAL(_fromUtf8("clicked()")), self.click)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         QtCore.QObject.connect(self.pushButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), self.uyeOl)
@@ -77,9 +80,10 @@ class Ui_Dialog(QtGui. QMainWindow):
         print("user oluşturuldu")
 
         if Mysql.getir(u):
-            """from anasayfa import AnaSayfa
-            self.anasayfa=AnaSayfa()
-            self.anasayfa.show()"""
+            if self.checkBox.isChecked():
+                from anasayfa import AnaSayfa
+                self.anasayfa=AnaSayfa()
+                self.anasayfa.show()
             basla=TarayiciTaramaBaslat(self)
 
         else:
@@ -91,10 +95,16 @@ class Ui_Dialog(QtGui. QMainWindow):
         self.label.setText(_translate("Dialog", "Kullanıcı Adi:", None))
         self.label_2.setText(_translate("Dialog", "Şifre:", None))
         self.pushButton_2.setText(_translate("Dialog", "ÜYE OL", None))
+        self.checkBox.setText(_translate("Dialog", "Geçmiş Açılsın mı?", None))
+
+def setup():
+        MainWindow.show()
+        app.exec_()
+
 import sys
 app = QtGui.QApplication(sys.argv)
 MainWindow = QtGui.QMainWindow()
 ui = Ui_Dialog(MainWindow)
-MainWindow.show()
-app.exec_()
+setup()
+
 
